@@ -273,11 +273,24 @@ static WFCaptureRecorder *recorder;
 
 #pragma mark ----- observer method
 - (void)sessionWasInterrupted:(NSNotification *)notification {
+    BOOL showResumeButton = NO;
     
+    if (&AVCaptureSessionInterruptionReasonKey) {
+        AVCaptureSessionInterruptionReason reason = [notification.userInfo [AVCaptureSessionInterruptionReasonKey] integerValue];
+        if (reason == AVCaptureSessionInterruptionReasonAudioDeviceInUseByAnotherClient || reason == AVCaptureSessionInterruptionReasonVideoDeviceInUseByAnotherClient) {
+            showResumeButton = YES;
+        }else if (reason == AVCaptureSessionInterruptionReasonVideoDeviceNotAvailableWithMultipleForegroundApps) {
+            
+        }
+    }else {
+        showResumeButton = ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive);
+    }
 }
 
 - (void)sessionInterruptionEnded:(NSNotification *)notification {
-    
+    if (!_session.isRunning) {
+        [_session startRunning];
+    }
 }
 
 @end
