@@ -196,7 +196,7 @@ static WFCaptureRecorder *recorder;
 }
 
 - (AVCaptureVideoPreviewLayer *)getPreviewLayer {
-    
+    return _preview;
 }
 
 - (void)startCapture {
@@ -352,16 +352,22 @@ static WFCaptureRecorder *recorder;
 
 #pragma mark ---
 - (void)changeFocusPoint:(CGPoint)point {
-    
+    if ([_captureDevice isFocusPointOfInterestSupported]) {
+        [_captureDevice lockForConfiguration:nil];
+        [_captureDevice setFocusPointOfInterest:point];
+        [_captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        [_captureDevice unlockForConfiguration];
+    }
 }
 
 #pragma mark ---
 - (BOOL)isCapturing {
-    
+    return _isCapturing;
 }
 
 - (void)clearSession {
-    
+    [_session stopRunning];
+    _session = nil;
 }
                               
 #pragma mark ---- Device Configration
