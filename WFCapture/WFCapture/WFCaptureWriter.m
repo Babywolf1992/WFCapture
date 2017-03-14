@@ -70,7 +70,7 @@
         
         NSDictionary *videoSettings;
         
-        if (_cropSize.height == 0 || _cropSize == 0) {
+        if (_cropSize.height == 0 || _cropSize.width == 0) {
             _cropSize = [UIScreen mainScreen].bounds.size;
         }
         
