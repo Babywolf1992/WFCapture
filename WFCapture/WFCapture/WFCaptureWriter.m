@@ -10,4 +10,36 @@
 
 @implementation WFCaptureWriter
 
+- (instancetype)initWithURL:(NSURL *)URL {
+    
+}
+
+- (instancetype)initWithURL:(NSURL *)URL cropSize:(CGSize)cropSize {
+    
+}
+
+- (void)setCropSize:(CGSize)size {
+    
+}
+
+- (void)prepareRecording {
+    
+}
+
+- (void)finishRecording {
+    
+}
+
+- (void)cancelRecording {
+    
+}
+
+- (void)appendAudioBuffer:(CMSampleBufferRef)sampleBuffer {
+    
+}
+
+- (void)appendVideoBuffer:(CMSampleBufferRef)sampleBuffer {
+    
+}
+
 @end
