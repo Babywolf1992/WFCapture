@@ -34,6 +34,8 @@ typedef void(^AuthorizationResult)(BOOL success);
 
 @property (nonatomic, assign) CGSize cropSize;
 
+@property (nonatomic, assign) NSTimeInterval duration;
+
 + (WFCaptureRecorder *)shareRecorder;
 
 - (void)setup;

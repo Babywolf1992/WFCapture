@@ -63,6 +63,7 @@ static WFCaptureRecorder *recorder;
 
 - (instancetype)init {
     if (self = [super init]) {
+        _duration = 0.f;
         _sessionQueuee = dispatch_queue_create("com.recorder.queue", DISPATCH_QUEUE_SERIAL);
         _videoDataOutputQueue = dispatch_queue_create("com.recorder.video", DISPATCH_QUEUE_SERIAL);
         dispatch_set_target_queue(_videoDataOutputQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
@@ -131,7 +132,7 @@ static WFCaptureRecorder *recorder;
                 [_videoDataOutput setSampleBufferDelegate:self queue:_videoDataOutputQueue];
                 _videoDataOutput.alwaysDiscardsLateVideoFrames = NO;
                 
-                if ([_session canAddOutput:_videoDataOutput];) {
+                if ([_session canAddOutput:_videoDataOutput]) {
                     [_session addOutput:_videoDataOutput];
                     
                     [_captureDevice addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:FocusAreaChangedContext];
@@ -162,6 +163,7 @@ static WFCaptureRecorder *recorder;
             
             AVCaptureAudioDataOutput *audioOutput = [[AVCaptureAudioDataOutput alloc] init];
             dispatch_queue_t audioCaptureQueue = dispatch_queue_create("com.recorder.audio", DISPATCH_QUEUE_SERIAL);
+            [audioOutput setSampleBufferDelegate:self queue:audioCaptureQueue];
             if ([self.session canAddOutput:audioOutput]) {
                 [_session addOutput:audioOutput];
             }
@@ -198,7 +200,25 @@ static WFCaptureRecorder *recorder;
 }
 
 - (void)startCapture {
-    
+    @synchronized (self) {
+        dispatch_async(_sessionQueuee, ^{
+            if (!self.isCapturing) {
+                if (![_session isRunning]) {
+                    [_session startRunning];
+                }
+                NSLog(@"starting capture");
+                _writer = nil;
+                _discout = NO;
+                _timeOffset = CMTimeMake(0, 0);
+                self.isCapturing = YES;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _durationTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(computeDuration:) userInfo:nil repeats:YES];
+                });
+                _duration = 0.f;
+            }
+        });
+    }
 }
 
 - (void)pauseCapture {
@@ -206,32 +226,128 @@ static WFCaptureRecorder *recorder;
 }
 
 - (void)stopCapture {
-    
+    [_session stopRunning];
+    [self finishCaptureWithReason:WFCaptureRecorderFinishedReasonNormal];
 }
 
 - (void)finishCapture {
-    
+    [_session stopRunning];
 }
 
 - (void)cancelCapture {
-    
+    [self finishCaptureWithReason:WFCaptureRecorderFinishedReasonCancel];
 }
 
 - (void)resumeCapture {
-    
+    @synchronized (self) {
+        NSLog(@"resuming capture");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _durationTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(computeDuration:) userInfo:nil repeats:YES];
+        });
+    }
+}
+
+- (void)finishCaptureWithReason:(WFCaptureRecorderFinishedReason)reason {
+    @synchronized (self) {
+        if (self.isCapturing) {
+            self.isCapturing = NO;
+            [_durationTimer invalidate];
+            dispatch_async(_sessionQueuee, ^{
+                switch (reason) {
+                    case WFCaptureRecorderFinishedReasonNormal: {
+                        [_writer finishRecording];
+                    }
+                        break;
+                    case WFCaptureRecorderFinishedReasonCancel: {
+                        [_writer cancelRecording];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+                self.finishedReason = reason;
+            });
+        }
+    }
+}
+
+- (void)computeDuration:(NSTimer *)timer {
+    if (self.isCapturing) {
+        [self willChangeValueForKey:@"duration"];
+        _duration += 0.1;
+        [self didChangeValueForKey:@"duration"];
+    }
 }
 
 #pragma mark ---
 - (void)startSession {
-    
+    if (!_session.isRunning) {
+        [_session startRunning];
+    }
 }
 
 - (BOOL)setScaleFoctor:(CGFloat)factor {
+    [_captureDevice lockForConfiguration:nil];
+    BOOL success = NO;
     
+    if (_captureDevice.activeFormat.videoMaxZoomFactor > factor) {
+        [_captureDevice rampToVideoZoomFactor:factor withRate:30.f];
+        NSLog(@"current format: %@, max zoom factor: %f",_captureDevice.activeFormat,_captureDevice.activeFormat.videoMaxZoomFactor);
+        success = YES;
+    }
+    [_captureDevice unlockForConfiguration];
+    return success;
 }
 
 - (void)changeCamera {
-    
+    dispatch_async(_sessionQueuee, ^{
+        AVCaptureDevice *currentVideoDevice = self.videoDeviceInput.device;
+        AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
+        AVCaptureDevicePosition currentPosition = currentVideoDevice.position;
+        
+        switch (currentPosition) {
+            case AVCaptureDevicePositionUnspecified:
+            case AVCaptureDevicePositionFront: {
+                preferredPosition = AVCaptureDevicePositionBack;
+            }
+                break;
+            case AVCaptureDevicePositionBack: {
+                preferredPosition = AVCaptureDevicePositionFront;
+            }
+                break;
+            default:
+                break;
+        }
+        if (_captureDevice.position == AVCaptureDevicePositionBack) {
+            [_captureDevice removeObserver:self forKeyPath:@"adjustingFocus"];
+        }
+        AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_captureDevice error:nil];
+        [_session beginConfiguration];
+        [_session addInput:videoDeviceInput];
+        if ([_session canAddInput:videoDeviceInput]) {
+            [_session addInput:videoDeviceInput];
+            
+            if (_captureDevice.position != AVCaptureDevicePositionFront) {
+                [_captureDevice lockForConfiguration:nil];
+                [_captureDevice addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:FocusAreaChangedContext];
+                [_captureDevice unlockForConfiguration];
+            }
+            
+            self.videoDeviceInput = videoDeviceInput;
+        }else {
+            [_session addInput:self.videoDeviceInput];
+        }
+        
+        _videoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        AVCaptureVideoOrientation initialVideoOrientation = AVCaptureVideoOrientationPortrait;
+        if (statusBarOrientation != UIInterfaceOrientationUnknown) {
+            initialVideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
+        }
+        _videoConnection.videoOrientation = initialVideoOrientation;
+        
+        [self.session commitConfiguration];
+    });
 }
 
 #pragma mark ---
