@@ -20,7 +20,7 @@
 
 @end
 
-@interface WFCaptureBtnView : UIView
+@interface WFCaptureBtnView : UIView<CAAnimationDelegate>
 
 @property (nonatomic, strong) NSTimer *durationTimer;
 @property (nonatomic, assign) float duration;
