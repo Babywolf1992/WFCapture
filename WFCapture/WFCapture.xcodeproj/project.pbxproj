@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E5EF50E1E797C5F00BB3ECD /* WFCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E5EF50D1E797C5F00BB3ECD /* WFCaptureViewController.m */; };
 		9EA0887A1E69BF68009FACF0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088791E69BF68009FACF0 /* main.m */; };
 		9EA0887D1E69BF68009FACF0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0887C1E69BF68009FACF0 /* AppDelegate.m */; };
 		9EA088801E69BF68009FACF0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0887F1E69BF68009FACF0 /* ViewController.m */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E5EF50C1E797C5F00BB3ECD /* WFCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFCaptureViewController.h; sourceTree = "<group>"; };
+		9E5EF50D1E797C5F00BB3ECD /* WFCaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureViewController.m; sourceTree = "<group>"; };
 		9EA088751E69BF68009FACF0 /* WFCapture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WFCapture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EA088791E69BF68009FACF0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9EA0887B1E69BF68009FACF0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 			children = (
 				9EA0887B1E69BF68009FACF0 /* AppDelegate.h */,
 				9EA0887C1E69BF68009FACF0 /* AppDelegate.m */,
+				9E5EF50C1E797C5F00BB3ECD /* WFCaptureViewController.h */,
+				9E5EF50D1E797C5F00BB3ECD /* WFCaptureViewController.m */,
 				9EA0887E1E69BF68009FACF0 /* ViewController.h */,
 				9EA0887F1E69BF68009FACF0 /* ViewController.m */,
 				9EA088B11E69C141009FACF0 /* WFCaptureRecorder.h */,
@@ -286,6 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E5EF50E1E797C5F00BB3ECD /* WFCaptureViewController.m in Sources */,
 				9EA088B31E69C141009FACF0 /* WFCaptureRecorder.m in Sources */,
 				9EA088801E69BF68009FACF0 /* ViewController.m in Sources */,
 				9EA0887D1E69BF68009FACF0 /* AppDelegate.m in Sources */,
@@ -530,6 +536,7 @@
 				9EA088A41E69BF69009FACF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9EA088A51E69BF69009FACF0 /* Build configuration list for PBXNativeTarget "WFCaptureTests" */ = {
 			isa = XCConfigurationList;
@@ -538,6 +545,7 @@
 				9EA088A71E69BF69009FACF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9EA088A81E69BF69009FACF0 /* Build configuration list for PBXNativeTarget "WFCaptureUITests" */ = {
 			isa = XCConfigurationList;
@@ -546,6 +554,7 @@
 				9EA088AA1E69BF69009FACF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
