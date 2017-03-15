@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9E5EF50E1E797C5F00BB3ECD /* WFCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E5EF50D1E797C5F00BB3ECD /* WFCaptureViewController.m */; };
 		9E5EF5111E797E9400BB3ECD /* WFCaptureBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E5EF5101E797E9400BB3ECD /* WFCaptureBtnView.m */; };
+		9E5EF5141E79884F00BB3ECD /* change_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E5EF5131E79884F00BB3ECD /* change_camera.png */; };
+		9E5EF5161E79885E00BB3ECD /* Safari Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E5EF5151E79885E00BB3ECD /* Safari Back@2x.png */; };
 		9EA0887A1E69BF68009FACF0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088791E69BF68009FACF0 /* main.m */; };
 		9EA0887D1E69BF68009FACF0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0887C1E69BF68009FACF0 /* AppDelegate.m */; };
 		9EA088801E69BF68009FACF0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0887F1E69BF68009FACF0 /* ViewController.m */; };
@@ -43,6 +45,8 @@
 		9E5EF50D1E797C5F00BB3ECD /* WFCaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureViewController.m; sourceTree = "<group>"; };
 		9E5EF50F1E797E9400BB3ECD /* WFCaptureBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFCaptureBtnView.h; sourceTree = "<group>"; };
 		9E5EF5101E797E9400BB3ECD /* WFCaptureBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureBtnView.m; sourceTree = "<group>"; };
+		9E5EF5131E79884F00BB3ECD /* change_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change_camera.png; sourceTree = "<group>"; };
+		9E5EF5151E79885E00BB3ECD /* Safari Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Safari Back@2x.png"; sourceTree = "<group>"; };
 		9EA088751E69BF68009FACF0 /* WFCapture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WFCapture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EA088791E69BF68009FACF0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9EA0887B1E69BF68009FACF0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -90,6 +94,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E5EF5121E79883F00BB3ECD /* iamges */ = {
+			isa = PBXGroup;
+			children = (
+				9E5EF5151E79885E00BB3ECD /* Safari Back@2x.png */,
+				9E5EF5131E79884F00BB3ECD /* change_camera.png */,
+			);
+			name = iamges;
+			sourceTree = "<group>";
+		};
 		9EA0886C1E69BF68009FACF0 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +150,7 @@
 		9EA088781E69BF68009FACF0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9E5EF5121E79883F00BB3ECD /* iamges */,
 				9EA088791E69BF68009FACF0 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -271,7 +285,9 @@
 			files = (
 				9EA088881E69BF68009FACF0 /* LaunchScreen.storyboard in Resources */,
 				9EA088851E69BF68009FACF0 /* Assets.xcassets in Resources */,
+				9E5EF5141E79884F00BB3ECD /* change_camera.png in Resources */,
 				9EA088831E69BF68009FACF0 /* Main.storyboard in Resources */,
+				9E5EF5161E79885E00BB3ECD /* Safari Back@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
