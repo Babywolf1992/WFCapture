@@ -62,6 +62,14 @@
     return self;
 }
 
+- (void)tapAction:(UIGestureRecognizer *)sender {
+    
+}
+
+- (void)longpressAction:(UIGestureRecognizer *)sender {
+    
+}
+
 - (void)commitAction {
     
 }
