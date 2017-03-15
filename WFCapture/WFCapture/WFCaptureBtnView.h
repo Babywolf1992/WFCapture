@@ -30,6 +30,8 @@
 @property (nonatomic, strong) UIView *commitView;
 @property (nonatomic, strong) UIView *cancelView;
 
+@property (nonatomic, strong) CAShapeLayer *arcLayer;
+
 @property (nonatomic, weak) id<WFCaptureBtnViewDelegate> delegate;
 
 - (void)cancelAction;
