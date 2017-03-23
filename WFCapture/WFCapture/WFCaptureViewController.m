@@ -109,23 +109,64 @@
 }
 
 - (void)backAction {
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)changeCamera {
-    
+    [self.recorder changeCamera];
 }
 
 - (void)changeFocusPoint:(UITapGestureRecognizer *)recognizer {
-    
+    _tap.enabled = NO;
+    CGPoint point = [recognizer locationInView:self.view];
+    [self changeFocus:point];
 }
 
 - (void)changeFocus:(CGPoint)point {
+    UIColor *color = [UIColor colorWithRed:0 green:0.8 blue:0 alpha:1];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(point.x-60, point.y-60, 120, 120)];
+    UIView *subView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 60, 10, 1)];
+    subView1.backgroundColor = color;
+    [view addSubview:subView1];
     
+    UIView *subView2 = [[UIView alloc] initWithFrame:CGRectMake(120-10, 60, 10, 1)];
+    subView2.backgroundColor = color;
+    [view addSubview:subView2];
+    
+    UIView *subView3 = [[UIView alloc] initWithFrame:CGRectMake(60, 0, 1, 10)];
+    subView3.backgroundColor = color;
+    [view addSubview:subView3];
+    
+    UIView *subView4 = [[UIView alloc] initWithFrame:CGRectMake(60, 120-10, 1, 10)];
+    subView4.backgroundColor = color;
+    [view addSubview:subView4];
+    [self.view addSubview:view];
+    float x = point.x / self.view.frame.size.width;
+    float y = point.y / self.view.frame.size.height;
+    view.layer.borderWidth = 0.7;
+    view.backgroundColor = [UIColor clearColor];
+    view.layer.borderColor = color.CGColor;
+    [UIView animateKeyframesWithDuration:1 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.1 animations:^{
+            view.transform = CGAffineTransformMakeScale(0.6, 0.6);
+            view.layer.borderWidth = 10/6.0;
+        }];
+    } completion:^(BOOL finished) {
+        [view removeFromSuperview];
+        _tap.enabled = YES;
+    }];
+    [_recorder changeFocusPoint:CGPointMake(x, y)];
 }
 
 - (void)showAlertView {
-    
+    [UIView animateKeyframesWithDuration:3 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubicPaced animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+            _alertLabel.alpha = 1;
+        }];
+        [UIView addKeyframeWithRelativeStartTime:1 relativeDuration:2 animations:^{
+            _alertLabel.alpha = 0;
+        }];
+    } completion:nil];
 }
 
 - (void)setupRecorder {
