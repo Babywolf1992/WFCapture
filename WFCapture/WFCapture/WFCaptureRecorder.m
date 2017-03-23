@@ -11,6 +11,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
+const NSString *const WFRecorderMovieURL = @"WFRecorderMovieURL";
+const NSString *const WFRecorderMovieDuration = @"WFRecorderMovieDuration";
+
 static void *SessionRunningContext = &SessionRunningContext;
 static void *CaptureStillImageContext = &CaptureStillImageContext;
 static void *FocusAreaChangedContext = &FocusAreaChangedContext;
@@ -479,7 +482,14 @@ static WFCaptureRecorder *recorder;
 
 #pragma mark ----- WFCaptureWriterDelegate method
 - (void)captureWriterDidFinishRecording:(WFCaptureWriter *)recorder status:(BOOL)isCancel {
-    
+    self.isCapturing = NO;
+    _writer = nil;
+    NSString *path = [self getFilePath];
+    if (self.finishBlock) {
+        NSDictionary *info = @{WFRecorderMovieURL : [NSURL fileURLWithPath:path],
+                               WFRecorderMovieDuration : @(_duration)};
+        self.finishBlock(info,self.finishedReason);
+    }
 }
 
 #pragma mark ----- observer method
