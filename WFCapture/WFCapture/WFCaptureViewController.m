@@ -204,7 +204,47 @@
 }
 
 - (void)setupRecorder {
+    _recorder = [WFCaptureRecorder shareRecorder];
     
+    _recorder.cropSize = CGSizeMake(kScreen_Width, kScreen_Height);
+    __weak WFCaptureViewController *blockSelf = self;
+    [_recorder setAuthorizationResultBlcok:^(BOOL success){
+        if (!success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"没有权限"
+                                                                message:nil
+                                                               delegate:blockSelf
+                                                      cancelButtonTitle:@"好的"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            });
+        }
+    }];
+    
+    [_recorder prepareCaptureWithBlock:^{
+        AVCaptureVideoPreviewLayer *preview = [_recorder getPreviewLayer];
+        preview.backgroundColor = [UIColor blackColor].CGColor;
+        preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        [preview removeFromSuperlayer];
+        preview.frame = blockSelf.view.bounds;
+        
+        [blockSelf.preview.layer addSublayer:preview];
+    }];
+    
+    [_recorder setFinishBlock:^(NSDictionary *info, WFCaptureRecorderFinishedReason reason){
+        switch (reason) {
+            case WFCaptureRecorderFinishedReasonNormal: {
+                
+            }
+                break;
+            case WFCaptureRecorderFinishedReasonCancel: {
+                
+            }
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 - (void)willResignActive:(NSNotification *)notification {
