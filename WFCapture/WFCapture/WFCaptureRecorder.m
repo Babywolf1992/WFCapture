@@ -462,7 +462,7 @@ static WFCaptureRecorder *recorder;
             [_writer appendAudioBuffer:sampleBuffer];
         }
     }
-    CFRelease(sampleBuffer)
+    CFRelease(sampleBuffer);
 }
 
 - (CMSampleBufferRef)adjustTime:(CMSampleBufferRef)sample by:(CMTime)offset {
