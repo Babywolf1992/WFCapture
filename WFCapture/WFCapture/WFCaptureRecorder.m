@@ -397,7 +397,84 @@ static WFCaptureRecorder *recorder;
 
 #pragma mark ---- AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureAudioDataOutputSampleBufferDelegate method
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    BOOL bVideo = YES;
     
+    @synchronized (self) {
+        if (!self.isCapturing) {
+            return;
+        }
+        if (connection != _videoConnection) {
+            bVideo = NO;
+        }
+        if (_writer == nil && !bVideo) {
+            _recordURL = [NSURL fileURLWithPath:[self getFilePath]];
+            CGFloat width = _cropSize.width;
+            CGFloat height = _cropSize.height;
+            if ((int)width % 2 == 1) {
+                width = _cropSize.width - 1;
+            }
+            if ((int)height % 2 == 1) {
+                height = _cropSize.height - 1;
+            }
+            CGSize size = CGSizeMake(width, height);
+            _writer = [[WFCaptureWriter alloc] initWithURL:_recordURL cropSize:size];
+            _writer.delegate = self;
+        }
+        if (_discout) {
+            if (bVideo) {
+                return;
+            }
+            _discout = NO;
+            CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+            CMTime last = bVideo ? _lastvideo : _lastAudio;
+            if (last.flags & kCMTimeFlags_Valid) {
+                if (_timeOffset.flags & kCMTimeFlags_Valid) {
+                    pts = CMTimeSubtract(pts, _timeOffset);
+                }
+                CMTime offset = CMTimeSubtract(pts, last);
+                if (_timeOffset.value == 0) {
+                    _timeOffset = offset;
+                }else {
+                    _timeOffset = CMTimeAdd(_timeOffset, offset);
+                }
+            }
+            _lastvideo.flags = 0;
+            _lastAudio.flags = 0;
+        }
+        CFRetain(sampleBuffer);
+        if (_timeOffset.value > 0) {
+            CFRelease(sampleBuffer);
+            sampleBuffer = [self adjustTime:sampleBuffer by:_timeOffset];
+        }
+        CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+        CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
+        if (dur.value > 0) {
+            pts = CMTimeAdd(pts, dur);
+        }
+        if (bVideo) {
+            _lastvideo = pts;
+            [_writer appendVideoBuffer:sampleBuffer];
+        }else {
+            _lastAudio = pts;
+            [_writer appendAudioBuffer:sampleBuffer];
+        }
+    }
+    CFRelease(sampleBuffer)
+}
+
+- (CMSampleBufferRef)adjustTime:(CMSampleBufferRef)sample by:(CMTime)offset {
+    CMItemCount count;
+    CMSampleBufferGetSampleTimingInfoArray(sample, 0, nil, &count);
+    CMSampleTimingInfo *pInfo = malloc(sizeof(CMSampleTimingInfo) * count);
+    CMSampleBufferGetSampleTimingInfoArray(sample, count, pInfo, &count);
+    for (CMItemCount i = 0; i < count; i++) {
+        pInfo[i].decodeTimeStamp = CMTimeSubtract(pInfo[i].decodeTimeStamp, offset);
+        pInfo[i].presentationTimeStamp = CMTimeSubtract(pInfo[i].presentationTimeStamp, offset);
+    }
+    CMSampleBufferRef sout;
+    CMSampleBufferCreateCopyWithNewTiming(nil, sample, count, pInfo, &sout);
+    free(pInfo);
+    return sout;
 }
 
 #pragma mark ----- WFCaptureWriterDelegate method
@@ -425,6 +502,12 @@ static WFCaptureRecorder *recorder;
     if (!_session.isRunning) {
         [_session startRunning];
     }
+}
+
+- (NSString *)getFilePath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"test.mp4"];
+    return filePath;
 }
 
 @end
