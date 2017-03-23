@@ -169,6 +169,40 @@
     } completion:nil];
 }
 
+- (void)longpressAction:(UIGestureRecognizer *)sender {
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            [self.recorder startCapture];
+        }
+            break;
+        case UIGestureRecognizerStateChanged: {
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded: {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.recorder finishCapture];
+                [self.recorder pauseCapture];
+            });
+            NSLog(@"拍摄结束");
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)commitAction {
+    [self.recorder stopCapture];
+}
+
+- (void)cancelAction {
+    [self.recorder cancelCapture];
+    [self.recorder setup];
+    
+    [self.recorder startCapture];
+}
+
 - (void)setupRecorder {
     
 }
