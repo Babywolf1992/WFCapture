@@ -41,6 +41,7 @@ typedef void(^AuthorizationResult)(BOOL success);
 - (void)setup;
 - (void)shutdown;
 - (AVCaptureVideoPreviewLayer *)getPreviewLayer;
+- (void)prepareCaptureWithBlock:(void (^)())block;
 - (void)startCapture;
 - (void)pauseCapture;
 - (void)stopCapture;
