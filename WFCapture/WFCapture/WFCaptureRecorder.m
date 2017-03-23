@@ -238,6 +238,18 @@ static WFCaptureRecorder *recorder;
     [self finishCaptureWithReason:WFCaptureRecorderFinishedReasonCancel];
 }
 
+- (void)prepareCaptureWithBlock:(void (^)())block {
+    dispatch_async(_sessionQueuee, ^{
+        [self setup];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            block();
+        });
+        if (!_session.isRunning) {
+            [_session startRunning];
+        }
+    });
+}
+
 - (void)resumeCapture {
     @synchronized (self) {
         NSLog(@"resuming capture");
