@@ -365,6 +365,24 @@ static WFCaptureRecorder *recorder;
     });
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == SessionRunningContext) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            NSLog(@"%s",__FUNCTION__);
+        });
+    }else if(context == FocusAreaChangedContext) {
+        if ([change[NSKeyValueChangeNewKey] integerValue] == 1) {
+            if (self.focusAreaDidChangedBlock) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    self.focusAreaDidChangedBlock();
+                });
+            }
+        }
+    }else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 #pragma mark ---
 - (void)changeFocusPoint:(CGPoint)point {
     if ([_captureDevice isFocusPointOfInterestSupported]) {
