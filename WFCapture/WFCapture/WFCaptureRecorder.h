@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
+extern const NSString *const WFRecorderMovieURL;
+extern const NSString *const WFRecorderMovieDuration;
+
 typedef enum{
     WFCaptureRecorderFinishedReasonNormal,
     WFCaptureRecorderFinishedReasonCancel

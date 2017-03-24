@@ -234,7 +234,33 @@
     [_recorder setFinishBlock:^(NSDictionary *info, WFCaptureRecorderFinishedReason reason){
         switch (reason) {
             case WFCaptureRecorderFinishedReasonNormal: {
-                
+                NSLog(@"%@",info);
+                NSNumber *durationValue = [info objectForKey:WFRecorderMovieDuration];
+                double duration = [durationValue doubleValue];
+                if (duration <= 1) {
+                    //拍照片
+                    NSURL *fileurl = [info objectForKey:WFRecorderMovieURL];
+                    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileurl options:nil];
+                    AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+                    assetImageGenerator.appliesPreferredTrackTransform = YES;
+                    assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+                    
+                    CGImageRef thumbnailImageRef = NULL;
+                    NSError *thumbnailImageGenerationError = nil;
+                    CMTime actualTime;
+                    thumbnailImageRef = [assetImageGenerator copyCGImageAtTime:CMTimeMake(0.0, 600) actualTime:&actualTime error:&thumbnailImageGenerationError];
+                    UIImage *thumbnailImage = [[UIImage alloc] initWithCGImage:thumbnailImageRef];
+                    CGImageRelease(thumbnailImageRef);
+                    if (!thumbnailImage) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alert show];
+                        [blockSelf.btnView cancelAction];
+                    }else {
+                        //截图成功
+                    }
+                }else {
+                    //拍视频
+                }
             }
                 break;
             case WFCaptureRecorderFinishedReasonCancel: {
