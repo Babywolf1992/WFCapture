@@ -13,7 +13,7 @@
 #import "WFCaptureBtnView.h"
 #import "WFCaptureRecorder.h"
 
-@interface WFCaptureViewController ()
+@interface WFCaptureViewController ()<WFCaptureBtnViewDelegate>
 
 @property (nonatomic, strong) WFCaptureBtnView *btnView;
 
@@ -77,6 +77,7 @@
     _preview.backgroundColor = [UIColor blackColor];
     [self.view addSubview:_preview];
     _btnView = [[WFCaptureBtnView alloc] initWithFrame:CGRectMake(0, kScreen_Height-80-40, kScreen_Width, 80)];
+    _btnView.delegate = self;
     [self.view addSubview:_btnView];
     
     _alertLabel = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-130)/2.0, CGRectGetMinY(_btnView.frame)-40, 130, 30)];
@@ -201,6 +202,12 @@
     [self.recorder setup];
     
     [self.recorder startCapture];
+}
+
+- (void)beyondMaxTime {
+    NSLog(@"beyondMaxTime");
+    [self.recorder finishCapture];
+    [self.recorder pauseCapture];
 }
 
 - (void)setupRecorder {

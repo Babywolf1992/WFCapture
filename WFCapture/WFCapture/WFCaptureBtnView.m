@@ -124,7 +124,7 @@
     _commitView.hidden = YES;
     _cancelView.hidden = YES;
     _commitView.transform = CGAffineTransformIdentity;
-    _commitView.transform = CGAffineTransformIdentity;
+    _cancelView.transform = CGAffineTransformIdentity;
     [self.delegate cancelAction];
 }
 
