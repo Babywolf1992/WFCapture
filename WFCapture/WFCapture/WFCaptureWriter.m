@@ -68,60 +68,59 @@
     
     if (error) {
         NSLog(@"error = %@",[error localizedDescription]);
-        
-        NSDictionary *videoSettings;
-        
-        if (_cropSize.height == 0 || _cropSize.width == 0) {
-            _cropSize = [UIScreen mainScreen].bounds.size;
+    }
+    NSDictionary *videoSettings;
+    
+    if (_cropSize.height == 0 || _cropSize.width == 0) {
+        _cropSize = [UIScreen mainScreen].bounds.size;
+    }
+    
+    videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                     AVVideoCodecH264, AVVideoCodecKey,
+                     [NSNumber numberWithInt:_cropSize.width*[UIScreen mainScreen].scale],AVVideoWidthKey,
+                     [NSNumber numberWithInt:_cropSize.height*[UIScreen mainScreen].scale],
+                     AVVideoHeightKey,
+                     AVVideoScalingModeResizeAspectFill, AVVideoScalingModeKey, nil];
+    
+    self.videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSettings];
+    NSParameterAssert(self.videoInput);
+    self.videoInput.expectsMediaDataInRealTime = YES;
+    
+    NSDictionary *sourcePixelBufferAttributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:kCVPixelFormatType_32ARGB],kCVPixelBufferPixelFormatTypeKey, nil];
+    
+    self.adaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.videoInput sourcePixelBufferAttributes:sourcePixelBufferAttributesDictionary];
+    
+    NSParameterAssert(self.videoInput);
+    
+    NSParameterAssert([self.videoWriter canAddInput:self.videoInput]);
+    
+    AudioChannelLayout acl;
+    
+    bzero(&acl, sizeof(acl));
+    
+    acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
+    
+    NSDictionary *audioOutputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,
+                                         [NSNumber numberWithInt:64000], AVEncoderBitRateKey,
+                                         [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+                                         [NSNumber numberWithInt:1], AVNumberOfChannelsKey,
+                                         [NSData dataWithBytes:&acl length:sizeof(acl)], AVChannelLayoutKey,nil];
+    
+    self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioOutputSettings];
+    self.audioInput.expectsMediaDataInRealTime = YES;
+    
+    [self.videoWriter addInput:self.audioInput];
+    [self.videoWriter addInput:self.videoInput];
+    
+    switch (self.videoWriter.status) {
+        case AVAssetWriterStatusUnknown: {
+            [self.videoWriter startWriting];
         }
-        
-        videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                         AVVideoCodecH264, AVVideoCodecKey,
-                         [NSNumber numberWithInt:_cropSize.width*[UIScreen mainScreen].scale],AVVideoWidthKey,
-                          [NSNumber numberWithInt:_cropSize.height*[UIScreen mainScreen].scale],
-                          AVVideoHeightKey,
-                         AVVideoScalingModeResizeAspectFill, AVVideoScalingModeKey, nil];
-        
-        self.videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSettings];
-        NSParameterAssert(self.videoInput);
-        self.videoInput.expectsMediaDataInRealTime = YES;
-        
-        NSDictionary *sourcePixelBufferAttributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:kCVPixelFormatType_32ARGB],kCVPixelBufferPixelFormatTypeKey, nil];
-        
-        self.adaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.videoInput sourcePixelBufferAttributes:sourcePixelBufferAttributesDictionary];
-        
-        NSParameterAssert(self.videoInput);
-        
-        NSParameterAssert([self.videoWriter canAddInput:self.videoInput]);
-        
-        AudioChannelLayout acl;
-        
-        bzero(&acl, sizeof(acl));
-        
-        acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
-        
-        NSDictionary *audioOutputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                             [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,
-                                             [NSNumber numberWithInt:64000], AVEncoderBitRateKey,
-                                             [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
-                                             [NSNumber numberWithInt:1], AVNumberOfChannelsKey,
-                                             [NSData dataWithBytes:&acl length:sizeof(acl)], AVChannelLayoutKey,nil];
-        
-        self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioOutputSettings];
-        self.audioInput.expectsMediaDataInRealTime = YES;
-        
-        [self.videoWriter addInput:self.audioInput];
-        [self.videoWriter addInput:self.videoInput];
-        
-        switch (self.videoWriter.status) {
-            case AVAssetWriterStatusUnknown: {
-                [self.videoWriter startWriting];
-            }
-                break;
-                
-            default:
-                break;
-        }
+            break;
+            
+        default:
+            break;
     }
 }
 
