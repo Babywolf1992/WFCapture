@@ -41,6 +41,7 @@
         }else {
             _cropSize = cropSize;
         }
+        [self prepareRecording];
     }
     return self;
 }
@@ -161,9 +162,11 @@
     if (self.videoWriter.status != AVAssetExportSessionStatusUnknown) {
         [self.videoWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
         _currentBuffer = sampleBuffer;
-        [self.videoInput appendSampleBuffer:sampleBuffer];
-    }else {
-        NSLog(@"appendVideoBuffer error");
+        if (self.videoInput.readyForMoreMediaData) {
+            [self.videoInput appendSampleBuffer:sampleBuffer];
+        }else {
+            NSLog(@"appendVideoBuffer error");
+        }
     }
 }
 

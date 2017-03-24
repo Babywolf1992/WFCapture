@@ -193,6 +193,14 @@
     }
 }
 
+- (void)tapAction:(UIGestureRecognizer *)sender {
+    [self.recorder startCapture];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.recorder finishCapture];
+        [self.recorder pauseCapture];
+    });
+}
+
 - (void)commitAction {
     [self.recorder stopCapture];
 }
