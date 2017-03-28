@@ -6,13 +6,11 @@
 //  Copyright © 2017年 babywolf. All rights reserved.
 //
 
-#define kScreen_Width ([UIScreen mainScreen].bounds.size.width)
-#define kScreen_Height ([UIScreen mainScreen].bounds.size.height)
-
 #import "WFCaptureViewController.h"
 #import "WFCaptureBtnView.h"
 #import "WFCaptureRecorder.h"
 #import "WFPlayer.h"
+#import "Contants.h"
 
 @interface WFCaptureViewController ()<WFCaptureBtnViewDelegate>
 

@@ -80,6 +80,7 @@
 		9EC4C4F41E8AA9DC00FD9A05 /* Oval 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Oval 1@2x.png"; sourceTree = "<group>"; };
 		9EC4C4F51E8AA9DC00FD9A05 /* Pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause@2x.png"; sourceTree = "<group>"; };
 		9EC4C4F61E8AA9DC00FD9A05 /* Play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Play@2x.png"; sourceTree = "<group>"; };
+		9EC4C4FA1E8AC6FF00FD9A05 /* Contants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +159,7 @@
 				9EA088AF1E69C12D009FACF0 /* WFCaptureWriter.m */,
 				9EC4C4F11E8AA5F400FD9A05 /* WFPlayer.h */,
 				9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */,
+				9EC4C4FA1E8AC6FF00FD9A05 /* Contants.h */,
 				9EA088811E69BF68009FACF0 /* Main.storyboard */,
 				9EA088841E69BF68009FACF0 /* Assets.xcassets */,
 				9EA088861E69BF68009FACF0 /* LaunchScreen.storyboard */,
