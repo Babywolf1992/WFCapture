@@ -23,6 +23,7 @@
 		9EA0889E1E69BF68009FACF0 /* WFCaptureUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0889D1E69BF68009FACF0 /* WFCaptureUITests.m */; };
 		9EA088B01E69C12D009FACF0 /* WFCaptureWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088AF1E69C12D009FACF0 /* WFCaptureWriter.m */; };
 		9EA088B31E69C141009FACF0 /* WFCaptureRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088B21E69C141009FACF0 /* WFCaptureRecorder.m */; };
+		9EC4C4F31E8AA5F400FD9A05 /* WFPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		9EA088AF1E69C12D009FACF0 /* WFCaptureWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureWriter.m; sourceTree = "<group>"; };
 		9EA088B11E69C141009FACF0 /* WFCaptureRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFCaptureRecorder.h; sourceTree = "<group>"; };
 		9EA088B21E69C141009FACF0 /* WFCaptureRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureRecorder.m; sourceTree = "<group>"; };
+		9EC4C4F11E8AA5F400FD9A05 /* WFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFPlayer.h; sourceTree = "<group>"; };
+		9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFPlayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +147,8 @@
 				9EA088B21E69C141009FACF0 /* WFCaptureRecorder.m */,
 				9EA088AE1E69C12D009FACF0 /* WFCaptureWriter.h */,
 				9EA088AF1E69C12D009FACF0 /* WFCaptureWriter.m */,
+				9EC4C4F11E8AA5F400FD9A05 /* WFPlayer.h */,
+				9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */,
 				9EA088811E69BF68009FACF0 /* Main.storyboard */,
 				9EA088841E69BF68009FACF0 /* Assets.xcassets */,
 				9EA088861E69BF68009FACF0 /* LaunchScreen.storyboard */,
@@ -327,6 +332,7 @@
 				9EA0887D1E69BF68009FACF0 /* AppDelegate.m in Sources */,
 				9EA088B01E69C12D009FACF0 /* WFCaptureWriter.m in Sources */,
 				9EA0887A1E69BF68009FACF0 /* main.m in Sources */,
+				9EC4C4F31E8AA5F400FD9A05 /* WFPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
