@@ -24,6 +24,9 @@
 		9EA088B01E69C12D009FACF0 /* WFCaptureWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088AF1E69C12D009FACF0 /* WFCaptureWriter.m */; };
 		9EA088B31E69C141009FACF0 /* WFCaptureRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA088B21E69C141009FACF0 /* WFCaptureRecorder.m */; };
 		9EC4C4F31E8AA5F400FD9A05 /* WFPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */; };
+		9EC4C4F71E8AA9DC00FD9A05 /* Oval 1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EC4C4F41E8AA9DC00FD9A05 /* Oval 1@2x.png */; };
+		9EC4C4F81E8AA9DC00FD9A05 /* Pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EC4C4F51E8AA9DC00FD9A05 /* Pause@2x.png */; };
+		9EC4C4F91E8AA9DC00FD9A05 /* Play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EC4C4F61E8AA9DC00FD9A05 /* Play@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +77,9 @@
 		9EA088B21E69C141009FACF0 /* WFCaptureRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFCaptureRecorder.m; sourceTree = "<group>"; };
 		9EC4C4F11E8AA5F400FD9A05 /* WFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFPlayer.h; sourceTree = "<group>"; };
 		9EC4C4F21E8AA5F400FD9A05 /* WFPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFPlayer.m; sourceTree = "<group>"; };
+		9EC4C4F41E8AA9DC00FD9A05 /* Oval 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Oval 1@2x.png"; sourceTree = "<group>"; };
+		9EC4C4F51E8AA9DC00FD9A05 /* Pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause@2x.png"; sourceTree = "<group>"; };
+		9EC4C4F61E8AA9DC00FD9A05 /* Play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Play@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,9 @@
 		9E5EF5121E79883F00BB3ECD /* iamges */ = {
 			isa = PBXGroup;
 			children = (
+				9EC4C4F41E8AA9DC00FD9A05 /* Oval 1@2x.png */,
+				9EC4C4F51E8AA9DC00FD9A05 /* Pause@2x.png */,
+				9EC4C4F61E8AA9DC00FD9A05 /* Play@2x.png */,
 				9E5EF5191E7994A100BB3ECD /* video_save.png */,
 				9E5EF5171E79949100BB3ECD /* video_back.png */,
 				9E5EF5151E79885E00BB3ECD /* Safari Back@2x.png */,
@@ -294,11 +303,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EC4C4F91E8AA9DC00FD9A05 /* Play@2x.png in Resources */,
+				9EC4C4F81E8AA9DC00FD9A05 /* Pause@2x.png in Resources */,
 				9EA088881E69BF68009FACF0 /* LaunchScreen.storyboard in Resources */,
 				9E5EF51A1E7994A100BB3ECD /* video_save.png in Resources */,
 				9EA088851E69BF68009FACF0 /* Assets.xcassets in Resources */,
 				9E5EF5181E79949100BB3ECD /* video_back.png in Resources */,
 				9E5EF5141E79884F00BB3ECD /* change_camera.png in Resources */,
+				9EC4C4F71E8AA9DC00FD9A05 /* Oval 1@2x.png in Resources */,
 				9EA088831E69BF68009FACF0 /* Main.storyboard in Resources */,
 				9E5EF5161E79885E00BB3ECD /* Safari Back@2x.png in Resources */,
 			);

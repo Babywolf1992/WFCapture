@@ -277,7 +277,8 @@
                 }else {
                     //拍视频
                     NSLog(@"拍摄完成");
-//                    wfplay
+                    WFPlayer *plaer = [[WFPlayer alloc] init];
+                    [blockSelf showViewController:plaer sender:nil];
                 }
             }
                 break;
