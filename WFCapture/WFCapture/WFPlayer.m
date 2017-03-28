@@ -98,8 +98,6 @@
     NSString *filePath = [self getFilePath];
     if (filePath && [fileManager fileExistsAtPath:filePath]) {
         [self showPlayer:[NSURL fileURLWithPath:filePath]];
-    }else {
-        
     }
 }
 
@@ -113,7 +111,7 @@
     _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
     _playerLayer.frame = self.view.bounds;
     _playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    [self.view.layer insertSublayer:_playerLayer atIndex:1];
+    [self.view.layer insertSublayer:_playerLayer atIndex:0];
     
     [self addVideoKVO];
     [self addVideoTimerObserver];

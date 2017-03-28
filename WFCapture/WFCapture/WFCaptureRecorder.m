@@ -532,6 +532,27 @@ static WFCaptureRecorder *recorder;
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:self.session];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionWasInterruptedNotification object:self.session];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionInterruptionEndedNotification object:self.session];
+    if (_captureDevice.position == AVCaptureDevicePositionBack) {
+        
+        [_captureDevice removeObserver:self forKeyPath:@"adjustingFocus"];
+    }
+    
+    [_session beginConfiguration];
+    [self.session removeInput:self.videoDeviceInput];
+    [_session commitConfiguration];
+    
+    if (_session) {
+        _session = nil;
+    }
+    
+    NSLog(@"%s", __FUNCTION__);
+}
+
 - (NSString *)getFilePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"test.mp4"];

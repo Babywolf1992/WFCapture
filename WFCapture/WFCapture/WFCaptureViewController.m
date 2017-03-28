@@ -277,8 +277,10 @@
                 }else {
                     //拍视频
                     NSLog(@"拍摄完成");
-                    WFPlayer *plaer = [[WFPlayer alloc] init];
-                    [blockSelf showViewController:plaer sender:nil];
+                    blockSelf.controller.showMode = WFShowModeMp4;
+                    [blockSelf dismissViewControllerAnimated:YES completion:nil];
+//                    WFPlayer *plaer = [[WFPlayer alloc] init];
+//                    [blockSelf presentViewController:plaer animated:YES completion:nil];
                 }
             }
                 break;
