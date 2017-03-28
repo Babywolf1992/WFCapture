@@ -7,9 +7,7 @@
 //
 
 #import "WFPlayer.h"
-
-#define WIDTH ([UIScreen mainScreen].bounds.size.width)
-#define HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#import "Contants.h"
 
 @implementation WFPlayer
 #pragma mark - life cycle method
@@ -47,7 +45,7 @@
     [_playButton addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
     [_playButton setImage:[UIImage imageNamed:@"Pause"] forState:UIControlStateNormal];
     [_playButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateSelected];
-    _playButton.frame = CGRectMake(15, HEIGHT-46-20, 46, 46);
+    _playButton.frame = CGRectMake(15, kScreen_Height-46-20, 46, 46);
     [_backView addSubview:_playButton];
     
     //  startTime
@@ -59,7 +57,7 @@
     [_backView addSubview:_startTime];
     
     //slider
-    _progressSlider =[[UISlider alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_startTime.frame)+5, CGRectGetMinY(_startTime.frame), WIDTH-CGRectGetMaxX(_startTime.frame)-35-20, 15)];
+    _progressSlider =[[UISlider alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_startTime.frame)+5, CGRectGetMinY(_startTime.frame), kScreen_Width-CGRectGetMaxX(_startTime.frame)-35-20, 15)];
     //  滑块左侧颜色
     _progressSlider.minimumTrackTintColor = [UIColor whiteColor];
     //  滑块右侧颜色
