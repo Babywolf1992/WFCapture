@@ -26,8 +26,6 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIImageView *timaImage;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) MBProgressHUD *progresshud;
-@property (nonatomic, strong) ASIHTTPRequest *request;
 @property (nonatomic, assign) float videoLength;
 @property (nonatomic, strong) id timeObser;
 

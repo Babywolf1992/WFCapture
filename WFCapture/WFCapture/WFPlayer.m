@@ -7,15 +7,15 @@
 //
 
 #import "WFPlayer.h"
-#import "ASIHTTPRequest.h"
-#import "Reachability.h"
-#import "WFDownloadCache.h"
+
+#define WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define HEIGHT ([UIScreen mainScreen].bounds.size.height)
 
 @implementation WFPlayer
 #pragma mark - life cycle method
 - (instancetype)initWithURL:(NSString *)urlString {
     if (self = [super init]) {
-        _request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        
     }
     return self;
 }
@@ -29,7 +29,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [_request clearDelegatesAndCancel];
     [self removeVideoKVO];
     [self removeVideoTimerObserver];
     [self removeNotification];
@@ -37,11 +36,6 @@
 
 #pragma mark - private method
 - (void)createUI {
-    _progresshud = [[MBProgressHUD alloc] initWithView:self.view];
-    _progresshud.mode = MBProgressHUDModeDeterminate;
-    _progresshud.progress = 0.0f;
-    [self.view addSubview:_progresshud];
-    
     //  backView
     _backView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _backView.backgroundColor = [UIColor clearColor];
@@ -100,18 +94,12 @@
 }
 
 - (void)willShowPlayer {
-    NSString *urlString = _request.url.absoluteString;
-    NSString *filePath = [[WFDownloadCache shareDownloadCache] queryFile:urlString];
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *filePath = [self getFilePath];
     if (filePath && [fileManager fileExistsAtPath:filePath]) {
         [self showPlayer:[NSURL fileURLWithPath:filePath]];
     }else {
-        if ([Reachability reachabilityForInternetConnection].currentReachabilityStatus == ReachableViaWWAN) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Hints", nil) message:NSLocalizedString(@"Are using flow, whether to continue to download", nil) delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"YES", nil),NSLocalizedString(@"Cancel", nil), nil];
-            [alert show];
-        }else {
-            [self downloadFile];
-        }
+        
     }
 }
 
@@ -173,7 +161,6 @@
 
 - (void)backAction {
     [_player pause];
-    [_request clearDelegatesAndCancel];
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -262,75 +249,10 @@
     [_player removeTimeObserver:_timeObser];
 }
 
-#pragma mark - Network
-- (void)downloadFile {
-    NSString *urlString = _request.url.absoluteString;
-//    NSString* filePath = [DYUtility getFilePath:[DYUtility getFileName:urlString]];
-    NSString *filePath = [DYUtility getFilePathWithURL:urlString];
-    NSString *tempPath = [DYUtility getFileCachePath:[DYUtility getFileName:urlString]];
-    [_request setDownloadDestinationPath:filePath];
-    [_request setTemporaryFileDownloadPath:tempPath];
-    [_request setAllowResumeForFileDownloads:YES];
-    _request.downloadProgressDelegate = self;
-    if ([urlString hasPrefix:@"https://"]||[urlString hasPrefix:@"HTTPS://"])
-    {
-        [_request setValidatesSecureCertificate:NO];
-    }
-    [_request setDelegate:self];
-    [_request setDownloadProgressDelegate:self];
-    [_request addRequestHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@-%@",[MobileData sharedInstance].clientLanguage,[MobileData sharedInstance].clientCountry]];
-    [_request setDidFinishSelector:@selector(downloadFileDone:)];
-    [_request setDidFailSelector:@selector(downloadFileFailed:)];
-    [_request setDefaultResponseEncoding:NSUTF8StringEncoding];
-    [_progresshud show:YES];
-    [_request startAsynchronous];
-}
-
-#pragma mark - ASIHttpRequestDelegate
-- (void)downloadFileDone:(ASIHTTPRequest *)requestFile {
-    [_progresshud hide:YES];
-    
-    NSDictionary* dict = requestFile.responseString.JSONValue;
-    if (dict && [[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"-2"]) {
-        [AlertView alertDownHUDWithMessage:dict[@"msg"] view:APPDELEGATE.window isBigFont:NO];
-        return;
-    }
-    NSString *urlstring = [requestFile.url absoluteString];
-    NSString* filePath = [DYUtility getFilePathWithURL:urlstring];
-    [[WFDownloadCache shareDownloadCache] cacheFile:requestFile.url.absoluteString];
-    [self showPlayer:[NSURL fileURLWithPath:filePath]];
-}
-
-- (void)downloadFileFailed:(ASIHTTPRequest *)requestFile {
-    [_progresshud hide:YES];
-    
-    NSDictionary* dict = requestFile.responseString.JSONValue;
-    if (dict && [[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"-2"]) {
-        [AlertView alertDownHUDWithMessage:dict[@"msg"] view:APPDELEGATE.window isBigFont:NO];
-        return;
-    }
-}
-
-- (void)setProgress:(float)newProgress {
-    _progresshud.progress = newProgress;
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:
-        {
-            [self downloadFile];
-        }
-            break;
-        case 1:
-        {
-            [self backAction];
-        }
-            break;
-        default:
-            break;
-    }
+- (NSString *)getFilePath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"test.mp4"];
+    return filePath;
 }
 
 @end

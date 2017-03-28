@@ -12,6 +12,7 @@
 #import "WFCaptureViewController.h"
 #import "WFCaptureBtnView.h"
 #import "WFCaptureRecorder.h"
+#import "WFPlayer.h"
 
 @interface WFCaptureViewController ()<WFCaptureBtnViewDelegate>
 
@@ -276,6 +277,7 @@
                 }else {
                     //拍视频
                     NSLog(@"拍摄完成");
+//                    wfplay
                 }
             }
                 break;
