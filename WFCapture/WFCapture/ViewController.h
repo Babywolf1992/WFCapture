@@ -17,5 +17,7 @@ typedef enum{
 
 @property (nonatomic, assign) WFShowMode showMode;
 
+@property (nonatomic, strong) UIImage *image;
+
 @end
 

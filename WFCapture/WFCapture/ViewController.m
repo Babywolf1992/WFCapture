@@ -31,7 +31,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.showMode == WFShowModeImage) {
-        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        imageView.image = self.image;
+        [self.view addSubview:imageView];
+        self.showMode = WFShowModeNone;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+        imageView.userInteractionEnabled = YES;
+        [imageView addGestureRecognizer:tap];
     }else if (self.showMode == WFShowModeMp4) {
         WFPlayer *player = [[WFPlayer alloc] init];
         self.showMode = WFShowModeNone;
@@ -43,6 +49,10 @@
     WFCaptureViewController *controller = [[WFCaptureViewController alloc] init];
     controller.controller = self;   //传值用
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)tapAction:(UIGestureRecognizer *)render {
+    [render.view removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning {

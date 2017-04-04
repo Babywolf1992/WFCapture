@@ -271,6 +271,10 @@
                         [blockSelf.btnView cancelAction];
                     }else {
                         //截图成功
+                        NSLog(@"截图成功");
+                        blockSelf.controller.showMode = WFShowModeImage;
+                        blockSelf.controller.image = thumbnailImage;
+                        [blockSelf dismissViewControllerAnimated:YES completion:nil];
                     }
                 }else {
                     //拍视频
