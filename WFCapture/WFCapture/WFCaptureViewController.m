@@ -52,7 +52,7 @@
     [super viewDidAppear:animated];
     [self showAlertView];
     [self setupRecorder];
-    [_recorder startSession];
+//    [_recorder startSession];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self changeFocus:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
